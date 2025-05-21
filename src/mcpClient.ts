@@ -8,7 +8,10 @@ export class MCPClient {
   }
 
   async context(lat: number, lon: number) {
-    const res = await fetch(this.baseUrl + '/context?code=Di0ryY2e5xoIhPjnSkiHqzEnurO8Bas3gEIPY1GRo-uFAzFugbZ23A==', {
+    // Use Vite env for API code
+    const apiCode = import.meta.env.VITE_FUNCTION_API_CODE;
+    const url = `${this.baseUrl}/context?code=${apiCode}`;
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lat, lon }),
