@@ -3,12 +3,14 @@ import './App.css'
 import { MCPClient } from './mcpClient'
 import { fetchOpenAIChatWithAgent } from './openaiSdkClient'
 
-const mcp = new MCPClient('https://utilitymcpserver.azurewebsites.net/api/v1')
+// Remove dotenv import and config from frontend (not supported in browser)
+// Use import.meta.env for Vite environment variables
+
+const mcp = new MCPClient(import.meta.env.VITE_FUNCTION_API_URL)
 
 // Utility function to call MCP server
 async function fetchUtilityData(lat: number, lon: number) {
-  const endpoint =
-    'https://utilitymcpserver.azurewebsites.net/api/v1/context?code=Di0ryY2e5xoIhPjnSkiHqzEnurO8Bas3gEIPY1GRo-uFAzFugbZ23A=='
+  const endpoint = `${import.meta.env.VITE_FUNCTION_API_URL}?code=${import.meta.env.VITE_FUNCTION_API_CODE}`
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
