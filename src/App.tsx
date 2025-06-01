@@ -181,30 +181,38 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'left' }}>
-      <h1>Utility Rates Chat</h1>
-      <div style={{ border: '1px solid #ccc', borderRadius: 8, padding: 16, minHeight: 300, background: '#181818' }}>
+    <div className="app-container">
+      <h1 className="app-title">Utility Rates Chat</h1>
+      <div className="chat-window">
         {messages.map((msg, i) => (
-          <div key={i} style={{ margin: '8px 0', color: msg.sender === 'agent' ? '#61dafb' : '#fff' }}>
-            <b>{msg.sender === 'agent' ? 'Agent' : 'You'}:</b> <span style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</span>
+          <div
+            key={i}
+            className={`chat-bubble ${msg.sender === 'agent' ? 'agent' : 'user'}`}
+          >
+            <span className="chat-sender">{msg.sender === 'agent' ? 'Agent' : 'You'}:</span>
+            <span className="chat-text">{msg.text}</span>
           </div>
         ))}
-        {loading && <div style={{ color: '#888' }}>Loading...</div>}
+        {loading && <div className="loading-msg">Loading...</div>}
       </div>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', marginTop: 16 }}>
+      <form onSubmit={handleSubmit} className="chat-form">
         <input
           type="text"
           value={input}
           onChange={handleInput}
           placeholder="Type your message or lat,lon..."
-          style={{ flex: 1, padding: 8, borderRadius: 4, border: '1px solid #333' }}
+          className="chat-input"
           disabled={loading}
         />
-        <button type="submit" disabled={loading} style={{ marginLeft: 8 }}>
+        <button type="submit" disabled={loading} className="send-btn">
           Send
         </button>
       </form>
-      <button onClick={handleDetectLocation} disabled={loading} style={{ marginTop: 8, width: '100%' }}>
+      <button
+        onClick={handleDetectLocation}
+        disabled={loading}
+        className="location-btn"
+      >
         Detect My Location
       </button>
     </div>
