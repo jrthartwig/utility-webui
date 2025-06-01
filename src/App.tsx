@@ -6,18 +6,28 @@ import { fetchOpenAIChatWithAgent } from './openaiSdkClient'
 // Remove dotenv import and config from frontend (not supported in browser)
 // Use import.meta.env for Vite environment variables
 
-const mcp = new MCPClient(import.meta.env.VITE_FUNCTION_API_URL)
+const mcpApiUrl = import.meta.env.VITE_FUNCTION_API_URL;
+const mcpApiCode = import.meta.env.VITE_FUNCTION_API_CODE;
+
+if (!mcpApiUrl) {
+  throw new Error('MCP API URL is not defined. Please check your .env file and Vite environment variables.');
+}
+
+const mcp = new MCPClient(mcpApiUrl);
 
 // Utility function to call MCP server
 async function fetchUtilityData(lat: number, lon: number) {
-  const endpoint = `${import.meta.env.VITE_FUNCTION_API_URL}?code=${import.meta.env.VITE_FUNCTION_API_CODE}`
+  let endpoint = mcpApiUrl;
+  if (mcpApiCode) {
+    endpoint += `?code=${mcpApiCode}`;
+  }
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ lat, lon }),
-  })
-  if (!res.ok) throw new Error('Failed to fetch utility data')
-  return res.json()
+  });
+  if (!res.ok) throw new Error('Failed to fetch utility data');
+  return res.json();
 }
 
 // Define the MCP function/tool for OpenAI function calling
